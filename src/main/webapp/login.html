@@ -39,11 +39,12 @@
                 个人信息<i class="el-icon-arrow-down el-icon--right"></i>
              </span>
               <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item > {{PWID}} </el-dropdown-item>
-                  <el-dropdown-item style="margin-top: 10px"><el-button @click="Dchangename=true" class="el-icon-edit" ></el-button>&nbsp;&nbsp;&nbsp;{{USERname}} </el-dropdown-item>
-                  <el-dropdown-item divided style="margin-top: 30px"> <el-button @click="PW1=true" class="el-icon-edit"></el-button>&nbsp;&nbsp;&nbsp;卧推</el-dropdown-item>
-                  <el-dropdown-item style="margin-top: 10px"> <el-button @click="PW2=true" class="el-icon-edit"></el-button>&nbsp;&nbsp;&nbsp;硬拉</el-dropdown-item>
-                  <el-dropdown-item style="margin-top: 10px"> <el-button @click="PW3=true" class="el-icon-edit"></el-button>&nbsp;&nbsp;&nbsp;深蹲</el-dropdown-item>
+                  <el-dropdown-item > {{MYDATA.pwid}} </el-dropdown-item>
+                  <el-dropdown-item style="margin-top: 10px"><el-button @click="Dchangename=true" class="el-icon-edit" ></el-button>&nbsp;&nbsp;&nbsp;{{MYDATA.username}} </el-dropdown-item>
+                  <el-dropdown-item divided style="margin-top: 30px"> <el-button @click="PW1=true" class="el-icon-edit"></el-button>&nbsp;&nbsp;&nbsp;卧推: {{MYDATA.benchPress}} KG</el-dropdown-item>
+                  <el-dropdown-item style="margin-top: 10px"> <el-button @click="PW2=true" class="el-icon-edit"></el-button>&nbsp;&nbsp;&nbsp;硬拉: {{MYDATA.pullHard}} KG</el-dropdown-item>
+                  <el-dropdown-item style="margin-top: 10px"> <el-button @click="PW3=true" class="el-icon-edit"></el-button>&nbsp;&nbsp;&nbsp;深蹲: {{MYDATA.deepSquat}} KG</el-dropdown-item>
+                  <el-dropdown-item style="margin-top: 10px"> &nbsp;&nbsp;&nbsp;总和: {{MYDATA.total}} KG</el-dropdown-item>
               </el-dropdown-menu>
           </el-dropdown>
           <el-button @click="A=true" size="middle" type="success" plain>登录</el-button>
@@ -221,7 +222,7 @@
                     console.log(resp.data);
                 })
             },
-            getusername()
+/*            getusername()
             {
                 var _this=this;
                 axios({
@@ -231,7 +232,7 @@
                 }).then(function (resp){
                     _this.USERname=resp.data;
                 })
-            },
+            },*/
             login(){
                 var _this=this;
                 axios({
@@ -257,9 +258,20 @@
                             message: '欢迎━(*｀∀´*)ノ亻!',
                             type: 'success'
                         });
-                        _this.getusername();
+                        _this.getuserdata();
                     }
 
+                })
+            },
+            getuserdata()
+            {
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost/data/MYdata",
+                    headers: {"token": _this.token},
+                }).then(function (resp){
+                    _this.MYDATA=resp.data;
                 })
             },
             register()
@@ -296,8 +308,7 @@
                             message: 'ฅ( ̳• · • ̳ฅ)',
                             type: 'success'
                         });
-                        _this.getusername();
-                        _this.SelectALL();
+                        _this.getuserdata();
                     }else if(resp.data=="notoken")
                     {
                         _this.$notify({
@@ -332,7 +343,7 @@
                             message: 'ฅ( ̳• · • ̳ฅ)',
                             type: 'success'
                         });
-                        _this.SelectALL();
+                        _this.getuserdata();
                     }else if(resp.data=="notoken")
                     {
                         _this.$notify({
@@ -367,7 +378,7 @@
                             message: 'ฅ( ̳• · • ̳ฅ)',
                             type: 'success'
                         });
-                        _this.SelectALL();
+                        _this.getuserdata();
                     }else if(resp.data=="notoken")
                     {
                         _this.$notify({
@@ -402,7 +413,7 @@
                             message: 'ฅ( ̳• · • ̳ฅ)',
                             type: 'success'
                         });
-                        _this.SelectALL();
+                        _this.getuserdata();
                     }else if(resp.data=="notoken")
                     {
                         _this.$notify({
@@ -435,6 +446,7 @@
                 data1:'',
                 data2:'',
                 data3:'',
+                MYDATA: {},
                 User: {
                     pwid: '',
                     username: '',

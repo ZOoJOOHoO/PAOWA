@@ -4,6 +4,7 @@ package com.example.power.controller;
 
 import com.example.power.mapper.use_Mapper;
 import com.example.power.pojo.User;
+import com.example.power.service.MYdataimp;
 import com.example.power.service.TOPimp;
 import com.example.power.utils.KeepUserInThreadlocal;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,43 +26,48 @@ public class data {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     TOPimp topimp;
+    @Autowired
+    MYdataimp mydataimp;
 
     @PostMapping ("/Uname")
     public String UName(HttpServletRequest request) throws IOException {
         BufferedReader br=request.getReader();
         String paras = br.readLine();
-        use_mapper.Uname(paras,KeepUserInThreadlocal.get());
-        return "success";
+        return mydataimp.Uname(paras);
     }
 
     @PostMapping ("/UA")
     public String A(HttpServletRequest request) throws IOException {
         BufferedReader br=request.getReader();
         String paras = br.readLine();
-        use_mapper.updata_A(Integer.parseInt(paras),KeepUserInThreadlocal.get());
-        use_mapper.updata_total(KeepUserInThreadlocal.get());
-        return "success";
+        return mydataimp.UA(paras);
     }
 
     @PostMapping ("/UB")
     public String B(HttpServletRequest request) throws IOException {
         BufferedReader br=request.getReader();
         String paras = br.readLine();
-        use_mapper.updata_B(Integer.parseInt(paras),KeepUserInThreadlocal.get());
-        use_mapper.updata_total(KeepUserInThreadlocal.get());
-        return "success";
+        return mydataimp.UB(paras);
     }
     @PostMapping ("/UC")
     public String C(HttpServletRequest request) throws IOException {
         BufferedReader br=request.getReader();
         String paras = br.readLine();
-        use_mapper.updata_C(Integer.parseInt(paras),KeepUserInThreadlocal.get());
-        use_mapper.updata_total(KeepUserInThreadlocal.get());
-        return "success";
+        return mydataimp.UC(paras);
+    }
+
+
+    //用户数据 先去redis去找
+    @PostMapping("/MYdata")
+    public User USERdata()
+    {
+        return mydataimp.MYdata();
     }
 
 
 
+
+    //top
     @GetMapping("/all")
     public List<User> all() throws JsonProcessingException {
         //return use_mapper.selectTOPA(10);
