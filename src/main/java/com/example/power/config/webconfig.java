@@ -24,7 +24,10 @@ public class webconfig implements WebMvcConfigurer {
                 //排除不需要拦截的地址
                 .excludePathPatterns(
                         "/Login_Register/**",
-                        "/data/all",
+                        "/data/top",
+                        "/data/topA",
+                        "/data/topB",
+                        "/data/topC",
 
                         //对webapp内的资源进行放行
                         "/login.html",

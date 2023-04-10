@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TOP {
     List<User> TOPA(int number) throws JsonProcessingException;
-    List<User> TOPB(int number);
-    List<User> TOPC(int number);
-    List<User> TOP(int number);
+    List<User> TOPB(int number) throws JsonProcessingException;
+    List<User> TOPC(int number) throws JsonProcessingException;
+    List<User> TOP(int number) throws JsonProcessingException;
 }

@@ -32,7 +32,6 @@
 <body>
 <div id="login" class="A">
     <el-container class="el-container" direction="vertical" >
-
       <el-header  class="head">
           <el-dropdown>
             <span class="el-dropdown-link" style="margin-right: 20px">
@@ -52,16 +51,19 @@
       </el-header>
         <el-container >
             <el-aside style="background-color: #d6d2d2;width: 200px" >
-
                     <el-menu background-color=#e6f0e7 default-active="1" class="el-menu-vertical-demo">
-                        <el-menu-item index="1">
-                            <i class="el-icon-s-data"></i>
-                            <span slot="title">TOP</span>
-                        </el-menu-item>
-                        <el-menu-item index="2" >
-                            <i class="el-icon-s-data"></i>
-                            <span slot="title">好友排名</span>
-                        </el-menu-item>
+                        <el-submenu index="1">
+                            <span style="font-size: large" slot="title"><i class="el-icon-s-data"></i>TOP50</span>
+                            <el-menu-item style="font-size: small" class="el-icon-s-data" index="1-1">&nbsp;&nbsp;卧推TOP</el-menu-item>
+                            <el-menu-item style="font-size: small" class="el-icon-s-data" index="1-2">&nbsp;&nbsp;硬拉TOP</el-menu-item>
+                            <el-menu-item style="font-size: small" class="el-icon-s-data" index="1-3">&nbsp;&nbsp;深蹲TOP</el-menu-item>
+                        </el-submenu>
+                        <el-submenu index="2">
+                            <span style="font-size: large" slot="title"><i class="el-icon-s-data"></i>好友排名</span>
+                            <el-menu-item @click="SelectALL" style="font-size: small" class="el-icon-s-data" index="2-1">&nbsp;&nbsp;卧推TOP</el-menu-item>
+                            <el-menu-item style="font-size: small" class="el-icon-s-data" index="2-2">&nbsp;&nbsp;硬拉TOP</el-menu-item>
+                            <el-menu-item style="font-size: small" class="el-icon-s-data" index="2-3">&nbsp;&nbsp;深蹲TOP</el-menu-item>
+                        </el-submenu>
                         <el-menu-item index="3" >
                             <i class="el-icon-user-solid"></i>
                             <span slot="title">好友管理</span>
@@ -70,7 +72,6 @@
 
             </el-aside>
             <el-main style="background-color: #e9e9eb">
-
                 <el-table :data="tableData" style="width: 100%">
                     <el-table-column
                             type="index"
@@ -216,23 +217,12 @@
                 var _this=this;
                 axios({
                     method:"get",
-                    url:"http://localhost/data/all",
+                    url:"http://localhost/data/top",
                 }).then(function (resp){
                     _this.tableData=resp.data;
                     console.log(resp.data);
                 })
             },
-/*            getusername()
-            {
-                var _this=this;
-                axios({
-                    method:"post",
-                    url:"http://localhost/Login_Register/name",
-                    data:_this.PWID
-                }).then(function (resp){
-                    _this.USERname=resp.data;
-                })
-            },*/
             login(){
                 var _this=this;
                 axios({

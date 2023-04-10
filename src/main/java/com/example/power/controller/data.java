@@ -29,20 +29,19 @@ public class data {
     @Autowired
     MYdataimp mydataimp;
 
+    //个人信息
     @PostMapping ("/Uname")
     public String UName(HttpServletRequest request) throws IOException {
         BufferedReader br=request.getReader();
         String paras = br.readLine();
         return mydataimp.Uname(paras);
     }
-
     @PostMapping ("/UA")
     public String A(HttpServletRequest request) throws IOException {
         BufferedReader br=request.getReader();
         String paras = br.readLine();
         return mydataimp.UA(paras);
     }
-
     @PostMapping ("/UB")
     public String B(HttpServletRequest request) throws IOException {
         BufferedReader br=request.getReader();
@@ -55,9 +54,6 @@ public class data {
         String paras = br.readLine();
         return mydataimp.UC(paras);
     }
-
-
-    //用户数据 先去redis去找
     @PostMapping("/MYdata")
     public User USERdata()
     {
@@ -65,30 +61,21 @@ public class data {
     }
 
 
-
-
     //top
-    @GetMapping("/all")
+    @GetMapping("/top")
     public List<User> all() throws JsonProcessingException {
-        //return use_mapper.selectTOPA(10);
-        return topimp.TOPA(10);
+        return topimp.TOP(50);
     }
-
     @GetMapping("/topA")
-    public List<User> allA()
-    {
-        return use_mapper.selectTOPA(50);
+    public List<User> allA() throws JsonProcessingException {
+        return topimp.TOPA(50);
     }
-
     @GetMapping("/topB")
-    public List<User> allB()
-    {
-        return use_mapper.selectTOPB(50);
+    public List<User> allB() throws JsonProcessingException {
+        return topimp.TOPB(50);
     }
-
     @GetMapping("/topC")
-    public List<User> allC()
-    {
-        return use_mapper.selectTOPC(50);
+    public List<User> allC() throws JsonProcessingException {
+        return topimp.TOPC(50);
     }
 }

@@ -37,8 +37,8 @@ public interface use_Mapper {
     @Select("SELECT PWID,username,benchPress,pullHard,deepSquat,total from user where PWID=#{PWID}")
     User select_By_pwid(String PWID);
 
-    @Select("SELECT PWID,username,benchPress,pullHard,deepSquat,total from user")
-    List<User> select_all();
+/*    @Select("SELECT PWID,username,benchPress,pullHard,deepSquat,total from user")
+    List<User> select_all();*/
 
     @Select("SELECT PWID,username,benchPress,pullHard,deepSquat,total from user ORDER BY total DESC LIMIT #{number}")
     List<User> selectTOP(int number);
