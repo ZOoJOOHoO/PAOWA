@@ -1,0 +1,26 @@
+server:
+  port: 80
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:///power
+    username: root
+    password: ZJH111@@
+    type: com.alibaba.druid.pool.DruidDataSource
+
+  data:
+    redis:
+      port: 6379
+
+      #host写服务器的ip地址 为我的虚拟机上的ip地址
+      host: 192.168.247.111
+      #host: 121.5.90.215
+      password: qwer1234
+      client-type: jedis
+      jedis:
+        pool:
+          max-active: 8
+          max-idle: 8
+          min-idle: 0
+          max-wait: 100

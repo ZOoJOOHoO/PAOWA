@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body,html{
+            height: 100%;
+        }
+        .A,
+        .el-container{
+            padding: 0;
+            margin: 0;
+            height: 100%;
+        }
+        .head
+        {
+            height: 30%;
+
+            text-align: right;
+            vertical-align: middle;
+        }
+        .main{
+            background-color: #FFFFFF;
+        }
+        .footer{
+            background-color: #CCCCCC;
+        }
+
+    </style>
+</head>
+<body>
+<div id="login" class="A">
+    <el-container class="el-container" direction="vertical" >
+
+      <el-header  class="head">
+          <el-dropdown>
+            <span class="el-dropdown-link" style="margin-right: 20px">
+                个人信息<i class="el-icon-arrow-down el-icon--right"></i>
+             </span>
+              <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item > {{PWID}} </el-dropdown-item>
+                  <el-dropdown-item style="margin-top: 10px"><el-button @click="Dchangename=true" class="el-icon-edit" ></el-button>&nbsp;&nbsp;&nbsp;{{USERname}} </el-dropdown-item>
+                  <el-dropdown-item divided style="margin-top: 30px"> <el-button @click="PW1=true" class="el-icon-edit"></el-button>&nbsp;&nbsp;&nbsp;卧推</el-dropdown-item>
+                  <el-dropdown-item style="margin-top: 10px"> <el-button @click="PW2=true" class="el-icon-edit"></el-button>&nbsp;&nbsp;&nbsp;硬拉</el-dropdown-item>
+                  <el-dropdown-item style="margin-top: 10px"> <el-button @click="PW3=true" class="el-icon-edit"></el-button>&nbsp;&nbsp;&nbsp;深蹲</el-dropdown-item>
+              </el-dropdown-menu>
+          </el-dropdown>
+          <el-button @click="A=true" size="middle" type="success" plain>登录</el-button>
+          <el-button @click="B=true" size="middle" type="primary" plain>注册</el-button>
+      </el-header>
+        <el-container >
+            <el-aside style="background-color: #d6d2d2;width: 200px" >
+
+                    <el-menu background-color=#e6f0e7 default-active="1" class="el-menu-vertical-demo">
+                        <el-menu-item index="1">
+                            <i class="el-icon-s-data"></i>
+                            <span slot="title">TOP</span>
+                        </el-menu-item>
+                        <el-menu-item index="2" >
+                            <i class="el-icon-s-data"></i>
+                            <span slot="title">好友排名</span>
+                        </el-menu-item>
+                        <el-menu-item index="3" >
+                            <i class="el-icon-user-solid"></i>
+                            <span slot="title">好友管理</span>
+                        </el-menu-item>
+                    </el-menu>
+
+            </el-aside>
+            <el-main style="background-color: #e9e9eb">
+
+                <el-table :data="tableData" style="width: 100%">
+                    <el-table-column
+                            type="index"
+                            width="50">
+                    </el-table-column>
+                    <el-table-column
+                            prop="username"
+                            label="用户名"
+                            align="center">
+                    </el-table-column>
+                    <el-table-column
+                            prop="benchPress"
+                            label="卧推"
+                            align="center">
+                    </el-table-column>
+                    <el-table-column
+                            prop="pullHard"
+                            label="硬拉"
+                            align="center">
+                    </el-table-column>
+                    <el-table-column
+                            prop="deepSquat"
+                            label="深蹲"
+                            align="center">
+                    </el-table-column>
+                    <el-table-column
+                            prop="total"
+                            label="三大项"
+                            align="center">
+                    </el-table-column>
+                </el-table>
+
+            </el-main>
+        </el-container>
+    </el-container>
+    <el-dialog
+            title="请登录"
+            :visible.sync="A"
+            width="30%">
+        <el-form ref="form" :model="User" label-width="80px">
+            <el-form-item label="PW_ID">
+                <el-input v-model="User.pwid"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+                <el-input v-model="User.password" show-password></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="login">立即登录</el-button>
+                <el-button @click="A = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+    <el-dialog
+            title="请注册"
+            :visible.sync="B"
+            width="30%">
+        <el-form ref="form" :model="User" label-width="80px">
+            <el-form-item label="用户名">
+                <el-input v-model="User.username"></el-input>
+            </el-form-item>
+            <el-form-item label="密码">
+                <el-input v-model="User.password" show-password></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="register">立即注册</el-button>
+                <el-button @click="B = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+
+    <el-dialog
+            title="ฅ( ̳• · • ̳ฅ)"
+            :visible.sync="PW1"
+            width="30%">
+        <el-form ref="form" label-width="40px">
+            <el-form-item label="卧推力量">
+                <el-input v-model="data1"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="UA" >更新</el-button>
+                <el-button @click="PW1 = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+    <el-dialog
+            title="ฅ( ̳• · • ̳ฅ)"
+            :visible.sync="PW2"
+            width="30%">
+        <el-form ref="form" label-width="40px">
+            <el-form-item label="硬拉力量">
+                <el-input v-model="data2"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="UB">更新</el-button>
+                <el-button @click="PW2 = false">取消</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+    <el-dialog
+        title="ฅ( ̳• · • ̳ฅ)"
+        :visible.sync="PW3"
+        width="30%">
+    <el-form ref="form" label-width="40px">
+        <el-form-item label="深蹲力量">
+            <el-input v-model="data3"></el-input>
+        </el-form-item>
+        <el-form-item>
+            <el-button type="primary" @click="UC">更新</el-button>
+            <el-button @click="PW3 = false">取消</el-button>
+        </el-form-item>
+    </el-form>
+    </el-dialog>
+
+    <el-dialog
+            title="ฅ( ̳• · • ̳ฅ)"
+            :visible.sync="Dchangename"
+            width="30%">
+        <el-form ref="form" label-width="40px">
+            <el-form-item label="改变用户名">
+                <el-input v-model="changename"></el-input>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="Uname">更新</el-button>
+                <el-button @click="Dchangename = false" >取消</el-button>
+            </el-form-item>
+        </el-form>
+    </el-dialog>
+
+</div>
+
+<script src="js/axios-0.18.0.js"></script>
+<script src="js/vue.js"></script>
+<script src="element-ui/lib/index.js"></script>
+<link rel="stylesheet" href="element-ui/lib/theme-chalk/index.css">
+<script>
+    new Vue({
+        el:"#login",
+        mounted(){
+            this.SelectALL()
+        },
+        methods:{
+            SelectALL() {
+                var _this=this;
+                axios({
+                    method:"get",
+                    url:"http://localhost/data/all",
+                }).then(function (resp){
+                    _this.tableData=resp.data;
+                    console.log(resp.data);
+                })
+            },
+            getusername()
+            {
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost/Login_Register/name",
+                    data:_this.PWID
+                }).then(function (resp){
+                    _this.USERname=resp.data;
+                })
+            },
+            login(){
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost/Login_Register/login",
+                    data: _this.User
+                }).then(function (resp){
+                    if (resp.data=="nouser")
+                    {
+                        _this.$notify({
+                            title: '登录失败',
+                            message: '请检查相关信息',
+                            type: 'warning'
+                        });
+                    }else
+                    {
+                        _this.A=false;
+                        _this.PWID=_this.User.pwid;
+                        _this.USERname=_this.User.username;
+                        _this.token=resp.data;
+                        _this.$notify({
+                            title: '登录成功',
+                            message: '欢迎━(*｀∀´*)ノ亻!',
+                            type: 'success'
+                        });
+                        _this.getusername();
+                    }
+
+                })
+            },
+            register()
+            {
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost/Login_Register/register",
+                    data: _this.User
+                }).then(function (resp){
+                    _this.B=false;
+                    _this.User.pwid=resp.data;
+                    _this.$notify({
+                        title: '注册成功',
+                        message: '请记住登录界面的PWID',
+                        type: 'success'
+                    });
+                })
+            },
+            Uname()
+            {
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost/data/Uname",
+                    data: _this.changename,
+                    headers: {"token": _this.token},
+                }).then(function (resp){
+                    if(resp.data=="success")
+                    {
+                        _this.Dchangename=false;
+                        _this.$notify({
+                            title: '更新成功',
+                            message: 'ฅ( ̳• · • ̳ฅ)',
+                            type: 'success'
+                        });
+                        _this.getusername();
+                        _this.SelectALL();
+                    }else if(resp.data=="notoken")
+                    {
+                        _this.$notify({
+                            title: '未登录',
+                            message: '请先进行登录',
+                            type: 'warning'
+                        });
+                    }else if(resp.data=="outoftime")
+                    {
+                        _this.$notify({
+                            title: '登录过期',
+                            message: '长时间未操作,登录过期',
+                            type: 'warning'
+                        });
+                    }
+                })
+            },
+            UA()
+            {
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost/data/UA",
+                    data: _this.data1,
+                    headers: {"token": _this.token},
+                }).then(function (resp){
+                    if(resp.data=="success")
+                    {
+                        _this.PW1=false;
+                        _this.$notify({
+                            title: '更新成功',
+                            message: 'ฅ( ̳• · • ̳ฅ)',
+                            type: 'success'
+                        });
+                        _this.SelectALL();
+                    }else if(resp.data=="notoken")
+                    {
+                        _this.$notify({
+                            title: '未登录',
+                            message: '请先进行登录',
+                            type: 'warning'
+                        });
+                    }else if(resp.data=="outoftime")
+                    {
+                        _this.$notify({
+                            title: '登录过期',
+                            message: '长时间未操作,登录过期',
+                            type: 'warning'
+                        });
+                    }
+                })
+            },
+            UB()
+            {
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost/data/UB",
+                    data: _this.data2,
+                    headers: {"token": _this.token},
+                }).then(function (resp){
+                    if(resp.data=="success")
+                    {
+                        _this.PW2=false;
+                        _this.$notify({
+                            title: '更新成功',
+                            message: 'ฅ( ̳• · • ̳ฅ)',
+                            type: 'success'
+                        });
+                        _this.SelectALL();
+                    }else if(resp.data=="notoken")
+                    {
+                        _this.$notify({
+                            title: '未登录',
+                            message: '请先进行登录',
+                            type: 'warning'
+                        });
+                    }else if(resp.data=="outoftime")
+                    {
+                        _this.$notify({
+                            title: '登录过期',
+                            message: '长时间未操作,登录过期',
+                            type: 'warning'
+                        });
+                    }
+                })
+            },
+            UC()
+            {
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost/data/UC",
+                    data: _this.data3,
+                    headers: {"token": _this.token},
+                }).then(function (resp){
+                    if(resp.data=="success")
+                    {
+                        _this.PW3=false;
+                        _this.$notify({
+                            title: '更新成功',
+                            message: 'ฅ( ̳• · • ̳ฅ)',
+                            type: 'success'
+                        });
+                        _this.SelectALL();
+                    }else if(resp.data=="notoken")
+                    {
+                        _this.$notify({
+                            title: '未登录',
+                            message: '请先进行登录',
+                            type: 'warning'
+                        });
+                    }else if(resp.data=="outoftime")
+                    {
+                        _this.$notify({
+                            title: '登录过期',
+                            message: '长时间未操作,登录过期',
+                            type: 'warning'
+                        });
+                    }
+                })
+            }
+        },
+
+
+        data(){
+            return{
+                tableData: [],
+                A:false,
+                B:false,
+                PW1:false,
+                PW2:false,
+                PW3:false,
+                Dchangename:false,
+                data1:'',
+                data2:'',
+                data3:'',
+                User: {
+                    pwid: '',
+                    username: '',
+                    password: ''
+                },
+                USERname:'',
+                PWID:'',
+                token:'',
+                changename:''
+            }
+
+        }
+    })
+</script>
+
+</body>
+</html>
