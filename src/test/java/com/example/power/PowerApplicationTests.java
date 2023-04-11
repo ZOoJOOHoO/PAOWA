@@ -4,6 +4,8 @@ import com.example.power.mapper.use_Mapper;
 import com.example.power.pojo.User;
 import com.example.power.service.TOP;
 import com.example.power.service.TOPimp;
+import com.example.power.service.friendsimp;
+import com.example.power.utils.KeepUserInThreadlocal;
 import com.example.power.utils.PWIDmake;
 import com.example.power.utils.token;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,6 +27,9 @@ class PowerApplicationTests {
     private StringRedisTemplate stringRedisTemplate;
 
     @Autowired
+    friendsimp friendsimp;
+
+    @Autowired
     PWIDmake pwiDmake;
 
     @Autowired
@@ -35,8 +40,8 @@ class PowerApplicationTests {
 
     @Test
     void contextLoads() throws JsonProcessingException {
-        List<User> topa = toPimp.TOPA(10);
-        System.out.println(topa);
+        KeepUserInThreadlocal.save("PW0");
+        friendsimp.Delfriend("PW1");
     }
 
 }
