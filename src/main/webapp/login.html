@@ -61,11 +61,11 @@
                         </el-submenu>
                         <el-submenu index="2">
                             <span style="font-size: large" slot="title"><i class="el-icon-s-data"></i>好友排名</span>
-                            <el-menu-item @click="SelectALL" style="font-size: small" class="el-icon-s-data" index="2-1">&nbsp;&nbsp;卧推TOP</el-menu-item>
+                            <el-menu-item @click="getfriendsData" style="font-size: small" class="el-icon-s-data" index="2-1">&nbsp;&nbsp;卧推TOP</el-menu-item>
                             <el-menu-item style="font-size: small" class="el-icon-s-data" index="2-2">&nbsp;&nbsp;硬拉TOP</el-menu-item>
                             <el-menu-item style="font-size: small" class="el-icon-s-data" index="2-3">&nbsp;&nbsp;深蹲TOP</el-menu-item>
                         </el-submenu>
-                        <el-menu-item @click="FRIENDS=true" index="3" >
+                        <el-menu-item @click="getfriendsData" index="3" >
                             <i class="el-icon-user-solid"></i>
                             <span slot="title">好友管理</span>
                         </el-menu-item>
@@ -348,6 +348,18 @@
                     _this.MYDATA=resp.data;
                 })
             },
+            getfriendsData()
+            {
+                var _this=this;
+                axios({
+                    method:"post",
+                    url:"http://localhost/friends/frienddata",
+                    headers: {"token": _this.token},
+                }).then(function (resp){
+                    _this.friends=resp.data;
+                    _this.FRIENDS=true;
+                })
+            },
             register()
             {
                 var _this=this;
@@ -521,7 +533,7 @@
                             message: 'ฅ( ̳• · • ̳ฅ)',
                             type: 'success'
                         });
-                        _this.getuserdata();
+                        _this.getfriendsData();
                     }else if(resp.data=="notoken")
                     {
                         _this.$notify({
@@ -565,6 +577,7 @@
                                 message: '删除成功',
                                 type: 'success'
                             });
+                            _this.getfriendsData();
                         }else if(resp.data=="notoken")
                         {
                             _this.$notify({
@@ -592,15 +605,7 @@
         data(){
             return{
                 tableData: [],
-                friends: [{
-                    "username": "JIJIBO",
-                    "password": null,
-                    "benchPress": 110,
-                    "pullHard": 150,
-                    "deepSquat": 110,
-                    "total": 370,
-                    "pwid": "PW0"
-                },],
+                friends: [],
                 A:false,
                 B:false,
                 PW1:false,

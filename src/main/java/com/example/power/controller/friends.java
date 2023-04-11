@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("friends")
@@ -33,7 +34,11 @@ public class friends {
     public String del(@RequestBody String body) throws IOException {
         ObjectMapper objectMapper=new ObjectMapper();
         User user = objectMapper.readValue(body, User.class);
-        System.out.println(user);
         return friendsimp.Delfriend(user.getPWID());
+    }
+
+    @PostMapping("/frienddata")
+    public List<User> data() {
+        return friendsimp.FriendsData();
     }
 }
