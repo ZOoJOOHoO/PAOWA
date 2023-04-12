@@ -67,7 +67,6 @@ public class friendsimp implements friends{
         ArrayList<String> friendid = new ArrayList<>(members);
         ArrayList<String> users_list = new ArrayList<>();
         for (String s1 : friendid) {
-            System.out.println(s1);
             if(Redis_string.getOperations().hasKey("PW:UserData:" + s1))
             {
                 String userJSON = Redis_string.get("PW:UserData:" + s1);

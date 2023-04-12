@@ -3,10 +3,8 @@ package com.example.power.controller;
 // ^^ @date 2023/4/2
 
 import com.example.power.mapper.use_Mapper;
-import com.example.power.pojo.User;
 import com.example.power.service.MYdataimp;
 import com.example.power.service.TOPimp;
-import com.example.power.utils.KeepUserInThreadlocal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,19 +60,19 @@ public class data {
 
     //top
     @GetMapping("/top")
-    public List<User> all() throws JsonProcessingException {
-        return topimp.TOP(50);
+    public List<String> all() throws JsonProcessingException {
+        return topimp.TOP2(50);
     }
     @GetMapping("/topA")
-    public List<User> allA() throws JsonProcessingException {
-        return topimp.TOPA(50);
+    public List<String> allA() throws JsonProcessingException {
+        return topimp.TOPA2(50);
     }
     @GetMapping("/topB")
-    public List<User> allB() throws JsonProcessingException {
-        return topimp.TOPB(50);
+    public List<String> allB() throws JsonProcessingException {
+        return topimp.TOPB2(50);
     }
     @GetMapping("/topC")
-    public List<User> allC() throws JsonProcessingException {
-        return topimp.TOPC(50);
+    public List<String> allC() throws JsonProcessingException {
+        return topimp.TOPC2(50);
     }
 }

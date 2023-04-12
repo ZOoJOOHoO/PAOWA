@@ -8,15 +8,13 @@ import com.example.power.pojo.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.SetOperations;
-import org.springframework.data.redis.core.StringRedisTemplate;
-import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TOPimp implements TOP{
@@ -49,6 +47,7 @@ public class TOPimp implements TOP{
             Redis_String.set("PW:TOPA:"+user.getPWID(),s);
             Reddis_ZSET.add("PW:TOPA",user.getPWID(),user.getBenchPress());
         }
+        stringRedisTemplate.expire("PW:TOPA",5, TimeUnit.MINUTES);
         return users;
     }
 
@@ -74,6 +73,7 @@ public class TOPimp implements TOP{
             Redis_String.set("PW:TOPB:"+user.getPWID(),s);
             Reddis_ZSET.add("PW:TOPB",user.getPWID(),user.getPullHard());
         }
+        stringRedisTemplate.expire("PW:TOPB",5, TimeUnit.MINUTES);
         return users;
     }
 
@@ -99,6 +99,7 @@ public class TOPimp implements TOP{
             Redis_String.set("PW:TOPC:"+user.getPWID(),s);
             Reddis_ZSET.add("PW:TOPC",user.getPWID(),user.getDeepSquat());
         }
+        stringRedisTemplate.expire("PW:TOPC",5, TimeUnit.MINUTES);
         return users;
     }
 
@@ -124,6 +125,98 @@ public class TOPimp implements TOP{
             Redis_String.set("PW:TOPALL:"+user.getPWID(),s);
             Reddis_ZSET.add("PW:TOPALL",user.getPWID(),user.getTotal());
         }
+        stringRedisTemplate.expire("PW:TOPALL",5, TimeUnit.MINUTES);
         return users;
+
+
+    }
+    @Override
+    public List<String> TOPA2(int number) throws JsonProcessingException {
+        ListOperations<String, String> redis_list = stringRedisTemplate.opsForList();
+        if(redis_list.getOperations().hasKey("PW:TOPALIST"))
+        {
+            List<String> list_userJSON = redis_list.range("PW:TOPALIST", 0, -1);
+            return list_userJSON;
+        }
+        else
+        {
+            List<User> users = use_mapper.selectTOPA(number);
+            ObjectMapper objectMapper1 = new ObjectMapper();
+            for (User user : users) {
+                String s = objectMapper1.writeValueAsString(user);
+                redis_list.rightPush("PW:TOPALIST",s);
+            }
+            stringRedisTemplate.expire("PW:TOPALIST",5,TimeUnit.MINUTES);
+            List<String> list_userJSON = redis_list.range("PW:TOPALIST", 0, -1);
+            return list_userJSON;
+        }
+    }
+
+    @Override
+    public List<String> TOPB2(int number) throws JsonProcessingException {
+        ListOperations<String, String> redis_list = stringRedisTemplate.opsForList();
+        if(redis_list.getOperations().hasKey("PW:TOPBLIST"))
+        {
+            List<String> list_userJSON = redis_list.range("PW:TOPBLIST", 0, -1);
+            return list_userJSON;
+        }
+        else
+        {
+            List<User> users = use_mapper.selectTOPB(number);
+            ObjectMapper objectMapper1 = new ObjectMapper();
+            for (User user : users) {
+                String s = objectMapper1.writeValueAsString(user);
+                redis_list.rightPush("PW:TOPBLIST",s);
+            }
+            stringRedisTemplate.expire("PW:TOPBLIST",5,TimeUnit.MINUTES);
+            List<String> list_userJSON = redis_list.range("PW:TOPBLIST", 0, -1);
+            return list_userJSON;
+        }
+    }
+
+    @Override
+    public List<String> TOPC2(int number) throws JsonProcessingException {
+        ListOperations<String, String> redis_list = stringRedisTemplate.opsForList();
+        if(redis_list.getOperations().hasKey("PW:TOPCLIST"))
+        {
+            List<String> list_userJSON = redis_list.range("PW:TOPCLIST", 0, -1);
+            return list_userJSON;
+        }
+        else
+        {
+            List<User> users = use_mapper.selectTOPC(number);
+            ObjectMapper objectMapper1 = new ObjectMapper();
+            for (User user : users)
+            {
+                String s = objectMapper1.writeValueAsString(user);
+                redis_list.rightPush("PW:TOPCLIST",s);
+            }
+            stringRedisTemplate.expire("PW:TOPCLIST",5,TimeUnit.MINUTES);
+            List<String> list_userJSON = redis_list.range("PW:TOPCLIST", 0, -1);
+            return list_userJSON;
+        }
+    }
+
+    @Override
+    public List<String> TOP2(int number) throws JsonProcessingException {
+        ListOperations<String, String> redis_list = stringRedisTemplate.opsForList();
+        if(redis_list.getOperations().hasKey("PW:TOPLIST"))
+        {
+            List<String> list_userJSON = redis_list.range("PW:TOPLIST", 0, -1);
+            return list_userJSON;
+        }
+        else
+        {
+            List<User> users = use_mapper.selectTOP(number);
+            ObjectMapper objectMapper1 = new ObjectMapper();
+            for (User user : users)
+            {
+                String s = objectMapper1.writeValueAsString(user);
+                redis_list.rightPush("PW:TOPLIST",s);
+            }
+            stringRedisTemplate.expire("PW:TOPLIST",5,TimeUnit.MINUTES);
+            List<String> list_userJSON = redis_list.range("PW:TOPLIST", 0, -1);
+            return list_userJSON;
+        }
     }
 }
