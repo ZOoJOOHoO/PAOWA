@@ -55,9 +55,8 @@ public class data {
         return mydataimp.UC(paras);
     }
     @PostMapping("/MYdata")
-    public User USERdata()
-    {
-        return mydataimp.MYdata();
+    public String USERdata() throws JsonProcessingException {
+        return mydataimp.MYdata2();
     }
 
 

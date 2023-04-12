@@ -364,8 +364,8 @@
                     url:"http://localhost/friends/frienddata",
                     headers: {"token": _this.token},
                 }).then(function (resp){
-                    _this.friends=resp.data;
-                    _this.tableData=resp.data;
+                    _this.friends=resp.data.map(str => JSON.parse(str));
+                    _this.tableData=resp.data.map(str => JSON.parse(str));
                 })
             },
             register()

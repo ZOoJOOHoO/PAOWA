@@ -5,9 +5,12 @@ package com.example.power.service;
 import com.example.power.mapper.use_Mapper;
 import com.example.power.pojo.User;
 import com.example.power.utils.KeepUserInThreadlocal;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -21,40 +24,49 @@ public class MYdataimp implements MYdata{
     use_Mapper use_mapper;
 
     @Override
-    public String Uname(String changename) {
+    public String Uname(String changename) throws JsonProcessingException {
         use_mapper.Uname(changename,KeepUserInThreadlocal.get());
-        HashOperations<String, Object, Object> Redishash = stringRedisTemplate.opsForHash();
-        Redishash.put("PW:UserData:"+KeepUserInThreadlocal.get(),"username",changename);
+        ValueOperations<String, String> Redis_string = stringRedisTemplate.opsForValue();
+        User user = use_mapper.select_By_pwid(KeepUserInThreadlocal.get());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String JSON_user = objectMapper.writeValueAsString(user);
+        Redis_string.set("PW:UserData:" + KeepUserInThreadlocal.get(),JSON_user);
         return "success";
     }
 
     @Override
-    public String UA(String A) {
+    public String UA(String A) throws JsonProcessingException {
         use_mapper.updata_A(Integer.parseInt(A),KeepUserInThreadlocal.get());
         use_mapper.updata_total(KeepUserInThreadlocal.get());
-        HashOperations<String, Object, Object> Redishash = stringRedisTemplate.opsForHash();
-        Redishash.put("PW:UserData:"+KeepUserInThreadlocal.get(),"benchPress",String.valueOf(use_mapper.select_By_pwid(KeepUserInThreadlocal.get()).getBenchPress()));
-        Redishash.put("PW:UserData:"+KeepUserInThreadlocal.get(),"total",String.valueOf(use_mapper.select_By_pwid(KeepUserInThreadlocal.get()).getTotal()));
+        ValueOperations<String, String> Redis_string = stringRedisTemplate.opsForValue();
+        User user = use_mapper.select_By_pwid(KeepUserInThreadlocal.get());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String JSON_user = objectMapper.writeValueAsString(user);
+        Redis_string.set("PW:UserData:" + KeepUserInThreadlocal.get(),JSON_user);
         return "success";
     }
 
     @Override
-    public String UB(String B) {
+    public String UB(String B) throws JsonProcessingException {
         use_mapper.updata_B(Integer.parseInt(B),KeepUserInThreadlocal.get());
         use_mapper.updata_total(KeepUserInThreadlocal.get());
-        HashOperations<String, Object, Object> Redishash = stringRedisTemplate.opsForHash();
-        Redishash.put("PW:UserData:"+KeepUserInThreadlocal.get(),"pullHard",String.valueOf(use_mapper.select_By_pwid(KeepUserInThreadlocal.get()).getPullHard()));
-        Redishash.put("PW:UserData:"+KeepUserInThreadlocal.get(),"total",String.valueOf(use_mapper.select_By_pwid(KeepUserInThreadlocal.get()).getTotal()));
+        ValueOperations<String, String> Redis_string = stringRedisTemplate.opsForValue();
+        User user = use_mapper.select_By_pwid(KeepUserInThreadlocal.get());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String JSON_user = objectMapper.writeValueAsString(user);
+        Redis_string.set("PW:UserData:" + KeepUserInThreadlocal.get(),JSON_user);
         return "success";
     }
 
     @Override
-    public String UC(String C) {
+    public String UC(String C) throws JsonProcessingException {
         use_mapper.updata_C(Integer.parseInt(C),KeepUserInThreadlocal.get());
         use_mapper.updata_total(KeepUserInThreadlocal.get());
-        HashOperations<String, Object, Object> Redishash = stringRedisTemplate.opsForHash();
-        Redishash.put("PW:UserData:"+KeepUserInThreadlocal.get(),"deepSquat",String.valueOf(use_mapper.select_By_pwid(KeepUserInThreadlocal.get()).getDeepSquat()));
-        Redishash.put("PW:UserData:"+KeepUserInThreadlocal.get(),"total",String.valueOf(use_mapper.select_By_pwid(KeepUserInThreadlocal.get()).getTotal()));
+        ValueOperations<String, String> Redis_string = stringRedisTemplate.opsForValue();
+        User user = use_mapper.select_By_pwid(KeepUserInThreadlocal.get());
+        ObjectMapper objectMapper = new ObjectMapper();
+        String JSON_user = objectMapper.writeValueAsString(user);
+        Redis_string.set("PW:UserData:" + KeepUserInThreadlocal.get(),JSON_user);
         return "success";
     }
 
@@ -89,6 +101,25 @@ public class MYdataimp implements MYdata{
             UserMap.put("total",String.valueOf(user.getTotal()));
             RedisHASH.putAll("PW:UserData:"+KeepUserInThreadlocal.get(),UserMap);
             return user;
+        }
+    }
+
+    @Override
+    public String MYdata2() throws JsonProcessingException {
+        ValueOperations<String, String> Redis_string = stringRedisTemplate.opsForValue();
+        if(Redis_string.getOperations().hasKey("PW:UserData:" + KeepUserInThreadlocal.get()))
+        {
+            //System.out.println("redis");
+            String JSON_user = Redis_string.get("PW:UserData:" + KeepUserInThreadlocal.get());
+            return JSON_user;
+        }else
+        {
+            //System.out.println("mysql");
+            User user = use_mapper.select_By_pwid(KeepUserInThreadlocal.get());
+            ObjectMapper objectMapper = new ObjectMapper();
+            String JSON_user = objectMapper.writeValueAsString(user);
+            Redis_string.set("PW:UserData:" + KeepUserInThreadlocal.get(),JSON_user);
+            return JSON_user;
         }
     }
 }

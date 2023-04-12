@@ -3,12 +3,20 @@ package com.example.power.service;
 // ^^ @date 2023/4/10
 
 import com.example.power.pojo.User;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 public interface MYdata {
     User MYdata();
-    String Uname(String changename);
-    String UA(String A);
-    String UB(String B);
-    String UC(String C);
+
+    //直接返回JSON字符串
+    String MYdata2() throws JsonProcessingException;
+
+    String Uname(String changename) throws JsonProcessingException;
+
+    String UA(String A) throws JsonProcessingException;
+
+    String UB(String B) throws JsonProcessingException;
+
+    String UC(String C) throws JsonProcessingException;
 
 }
