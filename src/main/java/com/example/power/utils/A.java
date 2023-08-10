@@ -8,5 +8,10 @@ public class A {
         System.out.println("B分支修改主分支");
         System.out.println("B分支修改主分支");
         System.out.println("B分支修改主分支");
+        System.out.println("A分支修改主分支");
+        System.out.println("A分支修改主分支");
+        System.out.println("A分支修改主分支");
+        System.out.println("A分支修改主分支");
+
     }
 }
