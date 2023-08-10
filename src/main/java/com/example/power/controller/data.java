@@ -57,6 +57,13 @@ public class data {
         return mydataimp.MYdata2();
     }
 
+    @GetMapping("/sign")
+    public String sign()
+    {
+        mydataimp.BITMAP_daka();
+        return "success";
+    }
+
 
     //top
     @GetMapping("/top")
