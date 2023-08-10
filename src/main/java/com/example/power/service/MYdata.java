@@ -19,4 +19,5 @@ public interface MYdata {
 
     String UC(String C) throws JsonProcessingException;
 
+    void BITMAP_daka();
 }

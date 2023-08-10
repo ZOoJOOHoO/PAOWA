@@ -13,6 +13,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -121,5 +124,14 @@ public class MYdataimp implements MYdata{
             Redis_string.set("PW:UserData:" + KeepUserInThreadlocal.get(),JSON_user);
             return JSON_user;
         }
+    }
+
+    @Override
+    public void BITMAP_daka() {
+        String s = KeepUserInThreadlocal.get();
+        LocalDateTime localDateTime = LocalDateTime.now();
+        String format = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+        String key=format;
+        stringRedisTemplate.opsForValue().setBit(key,localDateTime.getDayOfMonth()-1,true);
     }
 }

@@ -2,6 +2,7 @@ package com.example.power;
 
 import com.example.power.mapper.use_Mapper;
 import com.example.power.pojo.User;
+import com.example.power.service.MYdataimp;
 import com.example.power.service.TOP;
 import com.example.power.service.TOPimp;
 import com.example.power.service.friendsimp;
@@ -38,10 +39,12 @@ class PowerApplicationTests {
     @Autowired
     TOPimp toPimp;
 
+    @Autowired
+    MYdataimp mYdataimp;
+
     @Test
-    void contextLoads() throws JsonProcessingException {
-        KeepUserInThreadlocal.save("PW0");
-        friendsimp.Delfriend("PW1");
+    void contextLoads() {
+        mYdataimp.BITMAP_daka();
     }
 
 }
